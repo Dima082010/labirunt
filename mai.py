@@ -17,6 +17,17 @@ clock = pygame.time.Clock()
 fon = pygame.image.load(fila_path(r"images\turma.jpg"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
+win_image = pygame.image.load(fila_path(r'images\wol.jpg'))
+win_image = pygame.transform.scale(win_image, (WIN_WIDTH, WIN_HEIGHT))
+
+over_image = pygame.image.load(fila_path(r'images\turma.jpg'))
+over_image = pygame.transform.scale(over_image, (WIN_WIDTH, WIN_HEIGHT))
+
+pygame.mixer.music.load(fila_path(r'music\lvl1_music.mp3'))
+pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.play(-1)
+
+
 class Game_sprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image_name):
         super().__init__()
@@ -32,12 +43,32 @@ class Player(Game_sprite):
         super().__init__(x, y, width, height, image_name)
         self.speedx = 0
         self.speedy = 0
+        self.direction = 'left'
+        self.image_l = self.image
+        self.image_r = pygame.transform.flip(self.image, True, False)
 
     def update(self):
         if self.speedx < 0 and self.rect.left > 0 or self.speedx > 0 and self.rect.right < WIN_WIDTH:           
             self.rect.x += self.speedx
+        walls_touched = pygame.sprite.spritecollide(self, walls, False)
+        if self.speedx < 0:
+            for wall in walls_touched:
+                self.rect.left = max(self.rect.left, wall.rect.right)
+        elif self.speedx > 0:
+            for wall in walls_touched:
+                self.rect.right = min(self.rect.right, wall.rect.left)        
+
         if self.speedy < 0 and self.rect.top > 0 or self.speedy > 0 and self.rect.bottom < WIN_HEIGHT:
             self.rect.y += self.speedy
+
+        walls_touched = pygame.sprite.spritecollide(self, walls, False)
+        if self.speedy < 0:
+            for wall in walls_touched:
+                self.rect.top = max(self.rect.top, wall.rect.bottom)
+        elif self.speedy > 0:
+            for wall in walls_touched:
+                self.rect.bottom = min(self.rect.bottom, wall.rect.top)
+
 
 
 
@@ -85,8 +116,12 @@ while game == True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.speedx = 5
+                    player.direction = 'right'
+                    player.image = player.image_r
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.speedx = -5
+                    player.direction = 'left'
+                    player.image = player.image_l
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.speedy = -5
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
@@ -117,6 +152,18 @@ while game == True:
         enemy4.show()
         walls.draw(window)
 
+        if pygame.sprite.collide_rect(player, finish):
+            lvl = 10
+            pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1)
+
+    
+    elif lvl == 10:
+        window.blit(win_image, (0, 0))
+    
+    elif lvl == 11:
+        window.blit(over_image, (0, 0))
 
     clock.tick(FPS)
     pygame.display.update()

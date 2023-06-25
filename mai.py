@@ -44,6 +44,9 @@ class Player(Game_sprite):
 
 player = Player(5, 6, 50, 70, r'images\Luffy.png')
 enemy = Game_sprite(1100, 500, 50, 70, r'images\prison.png')
+enemy2 = Game_sprite(1100, 500, 50, 70, r'images\Crocodile.png')
+enemy3 = Game_sprite(1100, 500, 50, 70, r'images\katakuri.png')
+enemy4 = Game_sprite(1100, 500, 50, 70, r'images\leopard.png')
 finish = Game_sprite(90, 140, 40, 60, r'images\frukt.png')
 finish2 = Game_sprite(90, 240, 40, 60, r"images\Mochi.png")
 finish3 = Game_sprite(90, 240, 40, 60, r"images\frukt2.png")
@@ -109,6 +112,9 @@ while game == True:
         player.update()
         enemy.show()
         finish.show()
+        enemy2.show()
+        enemy3.show()
+        enemy4.show()
         walls.draw(window)
 
 

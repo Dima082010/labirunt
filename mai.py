@@ -70,19 +70,56 @@ class Player(Game_sprite):
                 self.rect.bottom = min(self.rect.bottom, wall.rect.top)
 
 
+class Enemy(Game_sprite):
+    def __init__(self, x, y, width, height, image_name, min_kord, max_kord, direction, speed):
+        super().__init__(x, y, width, height, image_name)
+        self.min_kord = min_kord
+        self.max_kord = max_kord
+        self.direction = direction
+        self.speed = speed
+    
+    def update(self):
+        if self.direction == 'left' or self.direction == 'right':
+            if self.direction == 'left':
+                self.rect.x -= self.speed
+            elif self.direction == 'right':
+                self.rect.x += self.speed
+            
+            if self.rect.left <= self.min_kord:
+                self.direction = 'right'
+            elif self.rect.right >= self.max_kord:
+                self.direction = 'left'
+
+        elif self.direction == 'up' or self.direction == 'down':
+            if self.direction == 'up':
+                self.rect.y -= self.speed
+            elif self.direction == 'down':
+                self.rect.y += self.speed
+            
+            if self.rect.top <= self.min_kord:
+                self.direction = 'down'
+            elif self.rect.bottom >= self.max_kord:
+                self.direction = 'up'
 
 
+enemys = pygame.sprite.Group()
+
+enemy = Enemy(600, 480, 50, 70, r'images\prison.png', 0, 600, 'left', 4)
+enemys.add(enemy)
+enemy2 = Enemy(150, 140, 50, 70, r'images\Crocodile.png', 150, 680, 'right', 5)
+enemys.add(enemy2)
+enemy3 = Enemy(1150, 110, 50, 90, r'images\katakuri.png', 0, 200, 'up', 5)
+enemys.add(enemy3)
+enemy4 = Enemy(1150, 630, 50, 70, r'images\leopard.png', 50, 1150, 'left', 7)
+enemys.add(enemy4)
 
 player = Player(5, 6, 50, 70, r'images\Luffy.png')
-enemy = Game_sprite(1100, 500, 50, 70, r'images\prison.png')
-enemy2 = Game_sprite(1100, 500, 50, 70, r'images\Crocodile.png')
-enemy3 = Game_sprite(1100, 500, 50, 70, r'images\katakuri.png')
-enemy4 = Game_sprite(1150, 130, 50, 70, r'images\leopard.png')
-finish = Game_sprite(90, 140, 40, 60, r'images\frukt.png')
+frukt = Game_sprite(90, 140, 40, 60, r'images\frukt.png')
 finish2 = Game_sprite(90, 240, 40, 60, r"images\Mochi.png")
 finish3 = Game_sprite(90, 240, 40, 60, r"images\frukt2.png")
 bonus = Game_sprite(250, 250, 50, 70, r'images\bonus.png')
-bonus2 = Game_sprite(1000, 20, 50, 70, r'images\bonus.png')
+key = Game_sprite(1000, 20, 50, 70, r'images\keys.png')
+
 
 
 walls = pygame.sprite.Group()
@@ -104,8 +141,8 @@ wall8 = Game_sprite(220, 210, 5, 190, r'images\wol.jpg')
 walls.add(wall8)
 wall9 = Game_sprite(950, 200, 250, 5, r'images\wol.jpg')
 walls.add(wall9)
-wall10 = Game_sprite(950, 0, 5, 140, r'images\wol.jpg')
-walls.add(wall10)
+#wall10 = Game_sprite(950, 0, 5, 140, r'images\wol.jpg')
+#walls.add(wall10)
 wall11 = Game_sprite(600, 300, 5, 250, r'images\wol.jpg')
 walls.add(wall11)
 wall12 = Game_sprite(2500, 6, 5, 100, r'images\wol.jpg')
@@ -161,16 +198,14 @@ while game == True:
         window.blit(fon, (0, 0))
         player.show()
         player.update()
-        enemy.show()
-        finish.show()
-        enemy2.show()
-        enemy3.show()
-        enemy4.show()
+        frukt.show()
         bonus.show()
-        bonus2.show()
+        key.show()
+        enemys.draw(window)
+        enemys.update()
         walls.draw(window)
 
-        if pygame.sprite.collide_rect(player, finish):
+        if pygame.sprite.collide_rect(player, key):
             lvl = 10
             pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
             pygame.mixer.music.set_volume(0.1)

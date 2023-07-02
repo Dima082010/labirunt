@@ -27,6 +27,10 @@ pygame.mixer.music.load(fila_path(r'music\lvl1_music.mp3'))
 pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)
 
+music_key = pygame.mixer.Sound(fila_path(r'music\vzyali-v-ruki-svyazku-klyuchey.ogg'))
+
+music_door = pygame.mixer.Sound(fila_path(r'music\skrip-dvernoy-ruchki.ogg'))
+
 
 class Game_sprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image_name):
@@ -46,6 +50,7 @@ class Player(Game_sprite):
         self.direction = 'left'
         self.image_l = self.image
         self.image_r = pygame.transform.flip(self.image, True, False)
+        self.is_key = 0
 
     def update(self):
         if self.speedx < 0 and self.rect.left > 0 or self.speedx > 0 and self.rect.right < WIN_WIDTH:           
@@ -68,6 +73,7 @@ class Player(Game_sprite):
         elif self.speedy > 0:
             for wall in walls_touched:
                 self.rect.bottom = min(self.rect.bottom, wall.rect.top)
+    
 
 
 class Enemy(Game_sprite):
@@ -77,6 +83,9 @@ class Enemy(Game_sprite):
         self.max_kord = max_kord
         self.direction = direction
         self.speed = speed
+        if direction == 'left' or direction == 'right':
+            self.image_l = self.image
+            self.image_r = pygame.transform.flip(self.image, True, False)
     
     def update(self):
         if self.direction == 'left' or self.direction == 'right':
@@ -87,8 +96,10 @@ class Enemy(Game_sprite):
             
             if self.rect.left <= self.min_kord:
                 self.direction = 'right'
+                self.image = self.image_r
             elif self.rect.right >= self.max_kord:
                 self.direction = 'left'
+                self.image = self.image_l
 
         elif self.direction == 'up' or self.direction == 'down':
             if self.direction == 'up':
@@ -110,7 +121,7 @@ enemy2 = Enemy(150, 140, 50, 70, r'images\Crocodile.png', 150, 680, 'right', 5)
 enemys.add(enemy2)
 enemy3 = Enemy(1150, 110, 50, 90, r'images\katakuri.png', 0, 200, 'up', 5)
 enemys.add(enemy3)
-enemy4 = Enemy(1150, 630, 50, 70, r'images\leopard.png', 50, 1150, 'left', 7)
+enemy4 = Enemy(1150, 630, 50, 70, r'images\leopard.png', 155, 1150, 'left', 7)
 enemys.add(enemy4)
 
 player = Player(5, 6, 50, 70, r'images\Luffy.png')
@@ -134,8 +145,8 @@ wall4 = Game_sprite(600, 300, 200, 5, r'images\wol.jpg')
 walls.add(wall4)
 wall5 = Game_sprite(5, 565, 1000, 5, r'images\wol.jpg')
 walls.add(wall5)
-#wall6 = Game_sprite(50, 565, 5, 250, r'images\wol.jpg')
-#walls.add(wall6)
+wall6 = Game_sprite(30, 100, 5, 250, r'images\wol.jpg')
+walls.add(wall6)
 wall7 = Game_sprite(800, 306, 5, 250, r'images\wol.jpg')
 walls.add(wall7)
 wall8 = Game_sprite(220, 210, 5, 190, r'images\wol.jpg')
@@ -206,8 +217,18 @@ while game == True:
         enemys.draw(window)
         enemys.update()
         walls.draw(window)
-
+        
         if pygame.sprite.collide_rect(player, key):
+            player.is_key = 1
+            music_key.play()
+            key.rect.y = -500
+
+        if pygame.sprite.collide_rect(player, wall6):
+            music_door.play()
+            #wall6.kill()
+            print('hallo')
+
+        if pygame.sprite.collide_rect(player, exit):
             lvl = 10
             pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
             pygame.mixer.music.set_volume(0.1)

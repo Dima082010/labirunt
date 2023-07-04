@@ -17,10 +17,10 @@ clock = pygame.time.Clock()
 fon = pygame.image.load(fila_path(r"images\turma.jpg"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
-win_image = pygame.image.load(fila_path(r'images\wol.jpg'))
+win_image = pygame.image.load(fila_path(r'images\winn.jpg'))
 win_image = pygame.transform.scale(win_image, (WIN_WIDTH, WIN_HEIGHT))
 
-over_image = pygame.image.load(fila_path(r'images\turma.jpg'))
+over_image = pygame.image.load(fila_path(r'images\game_over.jpg'))
 over_image = pygame.transform.scale(over_image, (WIN_WIDTH, WIN_HEIGHT))
 
 pygame.mixer.music.load(fila_path(r'music\lvl1_music.mp3'))

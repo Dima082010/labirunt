@@ -34,6 +34,8 @@ music_door = pygame.mixer.Sound(fila_path(r'music\skrip-dvernoy-ruchki.ogg'))
 music_shot = pygame.mixer.Sound(fila_path(r'music\vyistrel-iz-blastera.ogg'))
 music_shot.set_volume(0.2)
 
+music_eat = pygame.mixer.Sound(fila_path(r'music\poedanie-ukus-yabloka.ogg'))
+
 class Game_sprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image_name):
         super().__init__()
@@ -244,12 +246,13 @@ while game == True:
         
         if pygame.sprite.spritecollide(player, enemys, False):
             lvl = 11
-            pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
+            pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1)
             
         if pygame.sprite.collide_rect(player, frukt):
             player.can_shot += 1
+            music_eat.play()
             frukt.rect.y = -600
 
         if pygame.sprite.collide_rect(player, key):

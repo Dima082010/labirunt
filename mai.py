@@ -36,6 +36,8 @@ music_shot.set_volume(0.2)
 
 music_eat = pygame.mixer.Sound(fila_path(r'music\poedanie-ukus-yabloka.ogg'))
 
+music_closed_door = pygame.mixer.Sound(fila_path(r'music\door.ogg'))
+
 class Game_sprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image_name):
         super().__init__()
@@ -56,6 +58,29 @@ class Player(Game_sprite):
         self.image_r = pygame.transform.flip(self.image, True, False)
         self.is_key = 0
         self.can_shot = 0
+        self.is_gear = False
+        self.image_gear_r = pygame.image.load(fila_path(r'images\katakuri.png'))
+        self.image_gear_l = pygame.transform.flip(self.image_gear_r, True, False)
+        self.image_player_l = self.image_l
+        self.image_player_r = self.image_r
+
+    def gear_on(self):
+        self.is_gear = True
+        if self.direction == 'left':
+            self.image = self.image_gear_l
+        elif self.direction == 'right':
+            self.image = self.image_gear_r
+        self.image_r = self.image_gear_r
+        self.image_l = self.image_gear_l
+    
+    def gear_off(self):
+        self.is_gear = False
+        if self.direction == 'left':
+            self.image = self.image_player_l
+        elif self.direction == 'right':
+            self.image = self.image_player_r
+        self.image_r = self.image_player_r
+        self.image_l = self.image_player_l
 
     def update(self):
         if self.speedx < 0 and self.rect.left > 0 or self.speedx > 0 and self.rect.right < WIN_WIDTH:           
@@ -165,7 +190,7 @@ wall4 = Game_sprite(600, 300, 200, 5, r'images\wol.jpg')
 walls.add(wall4)
 wall5 = Game_sprite(5, 565, 1000, 5, r'images\wol.jpg')
 walls.add(wall5)
-wall6 = Game_sprite(30, 100, 5, 250, r'images\wol.jpg')
+wall6 = Game_sprite(150, 570, 5, 250, r'images\wol.jpg')
 walls.add(wall6)
 wall7 = Game_sprite(800, 306, 5, 250, r'images\wol.jpg')
 walls.add(wall7)
@@ -237,6 +262,7 @@ while game == True:
         frukt.show()
         bonus.show()
         key.show()
+        #wall6.show()
         exit.show()
         enemys.draw(window)
         enemys.update()
@@ -260,10 +286,14 @@ while game == True:
             music_key.play()
             key.rect.y = -500
 
-        if pygame.sprite.collide_rect(player, wall6):
-            music_door.play()
-            #wall6.kill()
-            print('hallo')
+        if player.rect.collidepoint(155, 630):
+            if player.is_key == 1:
+                music_door.play()
+                wall6.kill()
+                player.is_key = 0
+            else:
+                music_closed_door.play()
+                print('В тебе немає ключа!')
 
         if pygame.sprite.collide_rect(player, exit):
             lvl = 10

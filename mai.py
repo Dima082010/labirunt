@@ -59,7 +59,7 @@ class Player(Game_sprite):
         self.is_key = 0
         self.can_shot = 0
         self.is_gear = False
-        self.image_gear_r = pygame.image.load(fila_path(r'images\katakuri.png'))
+        self.image_gear_r = pygame.image.load(fila_path(r'images\lufi.png'))
         self.image_gear_l = pygame.transform.flip(self.image_gear_r, True, False)
         self.image_player_l = self.image_l
         self.image_player_r = self.image_r

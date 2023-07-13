@@ -17,6 +17,9 @@ clock = pygame.time.Clock()
 fon = pygame.image.load(fila_path(r"images\turma.jpg"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
+fon_menu = pygame.image.load(fila_path(r'images\wol.jpg'))
+fon_menu = pygame.transform.scale(fon_menu, (WIN_WIDTH, WIN_HEIGHT))
+
 win_image = pygame.image.load(fila_path(r'images\winn.jpg'))
 win_image = pygame.transform.scale(win_image, (WIN_WIDTH, WIN_HEIGHT))
 
@@ -37,6 +40,8 @@ music_shot.set_volume(0.2)
 music_eat = pygame.mixer.Sound(fila_path(r'music\poedanie-ukus-yabloka.ogg'))
 
 music_closed_door = pygame.mixer.Sound(fila_path(r'music\door.ogg'))
+
+music_gear = pygame.mixer.Sound(fila_path(r'music\gear.ogg'))
 
 class Game_sprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image_name):
@@ -59,10 +64,12 @@ class Player(Game_sprite):
         self.is_key = 0
         self.can_shot = 0
         self.is_gear = False
-        self.image_gear_r = pygame.image.load(fila_path(r'images\lufi.png'))
-        self.image_gear_l = pygame.transform.flip(self.image_gear_r, True, False)
+        self.image_gear_l = pygame.image.load(fila_path(r'images\lufi.png'))
+        self.image_gear_l = pygame.transform.scale(self.image_gear_l, (width, height))
+        self.image_gear_r = pygame.transform.flip(self.image_gear_l, True, False)
         self.image_player_l = self.image_l
         self.image_player_r = self.image_r
+        self.counter = 600
 
     def gear_on(self):
         self.is_gear = True
@@ -103,7 +110,14 @@ class Player(Game_sprite):
         elif self.speedy > 0:
             for wall in walls_touched:
                 self.rect.bottom = min(self.rect.bottom, wall.rect.top)
-    
+
+        if self.is_gear == True:
+            self.counter -= 1
+            if self.counter == 0:
+                self.is_gear = False
+                self.gear_off()
+                self.counter = 600
+        
     def shot(self):
         if self.direction == 'right':
             bullet = Bulet(self.rect.right, self.rect.centery, 20, 20, r'images\ball.png', 6)
@@ -214,8 +228,24 @@ wall16 = Game_sprite(1000, 450, 200, 5, r'images\wol.jpg')
 walls.add(wall16)
 
 
+def create_lvl_2():
+    fon = pygame.image.load(fila_path(r"images\turma.jpg"))
+    fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
+
+    bullets.empty()
+    enemys.empty()
+    #! Створи ворогів діма!
+    walls.empty()
+    #! створити стіни!
+
+    player.rect.x = 5
+    player.rect.y = 66
+
+
+
 
 lvl = 1
+#create_lvl_2()
 game = True
 
 while game == True:
@@ -270,7 +300,8 @@ while game == True:
         bullets.draw(window)
         bullets.update()
         
-        if pygame.sprite.spritecollide(player, enemys, False):
+    
+        if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False:
             lvl = 11
             pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
             pygame.mixer.music.set_volume(0.1)
@@ -286,11 +317,11 @@ while game == True:
             music_key.play()
             key.rect.y = -500
 
-        if player.rect.collidepoint(155, 630):
+        if player.rect.collidepoint(155, 630) and player.is_key != -1:
             if player.is_key == 1:
                 music_door.play()
                 wall6.kill()
-                player.is_key = 0
+                player.is_key = -1
             else:
                 music_closed_door.play()
                 print('В тебе немає ключа!')
@@ -301,9 +332,31 @@ while game == True:
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1)
         
+        if pygame.sprite.collide_rect(player, bonus):
+            player.gear_on()
+            music_gear.play()
+            bonus.rect.y = -100
+
         pygame.sprite.groupcollide(bullets, walls, True, False)
         pygame.sprite.groupcollide(bullets, enemys, True, True)
     
+    elif lvl == 2:
+        window.blit(fon, (0, 0))
+        player.show()
+        player.update()
+        #frukt_2.show()
+        #bonus.show()
+        #key_2.show()
+        #exit_2.show()
+        enemys.draw(window)
+        enemys.update()
+        walls.draw(window)
+        bullets.draw(window)
+        bullets.update()
+
+    elif lvl == 0:
+        window.blit(fon_menu, (0, 0))
+
     elif lvl == 10:
         window.blit(win_image, (0, 0))
     

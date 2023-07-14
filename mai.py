@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 fon = pygame.image.load(fila_path(r"images\turma.jpg"))
 fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
-fon_menu = pygame.image.load(fila_path(r'images\wol.jpg'))
+fon_menu = pygame.image.load(fila_path(r'images\main.jpg'))
 fon_menu = pygame.transform.scale(fon_menu, (WIN_WIDTH, WIN_HEIGHT))
 
 win_image = pygame.image.load(fila_path(r'images\winn.jpg'))
@@ -347,7 +347,7 @@ while game == True:
         #frukt_2.show()
         #bonus.show()
         #key_2.show()
-        #exit_2.show()
+        exit.show()
         enemys.draw(window)
         enemys.update()
         walls.draw(window)

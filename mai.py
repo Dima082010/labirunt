@@ -10,6 +10,14 @@ def fila_path(file_name):
 WIN_WIDTH = 1200
 WIN_HEIGHT = 700
 FPS = 40
+LVL_1 = (18, 17, 17)
+LVL_1_CLICK = (15, 14, 14)
+LVL_2 = (64, 23, 4)
+LVL_2_CLICK = (61, 20, 1)
+LVL_3 = (46, 124, 7)
+LVL_3_CLICK = (32, 74, 4)
+TEXT = (255, 255, 255)
+EXIT = (18, 78, 7)
 
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 clock = pygame.time.Clock()
@@ -26,7 +34,7 @@ win_image = pygame.transform.scale(win_image, (WIN_WIDTH, WIN_HEIGHT))
 over_image = pygame.image.load(fila_path(r'images\game_over.jpg'))
 over_image = pygame.transform.scale(over_image, (WIN_WIDTH, WIN_HEIGHT))
 
-pygame.mixer.music.load(fila_path(r'music\lvl1_music.mp3'))
+pygame.mixer.music.load(fila_path(r'music\fon_music_menu.mp3'))
 pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)
 
@@ -43,6 +51,8 @@ music_closed_door = pygame.mixer.Sound(fila_path(r'music\door.ogg'))
 
 music_gear = pygame.mixer.Sound(fila_path(r'music\gear.ogg'))
 
+
+
 class Game_sprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, image_name):
         super().__init__()
@@ -52,6 +62,22 @@ class Game_sprite(pygame.sprite.Sprite):
 
     def show(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
+
+class Buton():
+    def __init__(self, x, y, width, height, text, size, no_click, click, text_color, p_x, p_y):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = pygame.font.SysFont('calibri', size).render(text, True, text_color)
+        self.no_click = no_click
+        self.click = click
+        self.color = no_click
+        self.p_x = p_x
+        self.p_y = p_y
+    
+    def show(self):
+        pygame.draw.rect(window, self.color, self.rect)
+        window.blit(self.text, (self.rect.x + self.p_x, self.rect.y + self.p_y))
+
+
 
 class Player(Game_sprite):
     def __init__(self, x, y, width, height, image_name):
@@ -161,6 +187,28 @@ class Enemy(Game_sprite):
             elif self.rect.bottom >= self.max_kord:
                 self.direction = 'up'
 
+class Shot(Enemy):
+    def __init__(self, x, y, width, height, image_name, min_kord, max_kord, direction, speed, timer):
+        super().__init__(x, y, width, height, image_name, min_kord, max_kord, direction, speed)
+        self.timer = timer
+        self.max_timer = timer
+
+    def update(self):
+        super().update()
+        self.timer -= 1
+        if self.timer == 0:
+            self.timer = self.max_timer
+            self.shot()
+
+    def shot(self):
+        if self.direction == 'right':
+            bullet = Bulet(self.rect.right, self.rect.centery, 20, 20, r'images\ball_2.png', 6)
+        else:
+            bullet = Bulet(self.rect.left - 20, self.rect.centery, 20, 20, r'images\ball_2.png', -6)
+        bullets_enemy.add(bullet)
+
+
+
 class Bulet(Game_sprite):
     def __init__(self, x, y, width, height, image_name, speed_ball):
         super().__init__(x, y, width, height, image_name)
@@ -177,10 +225,11 @@ enemy = Enemy(600, 480, 50, 70, r'images\prison.png', 0, 600, 'left', 4)
 enemys.add(enemy)
 enemy2 = Enemy(150, 140, 50, 70, r'images\Crocodile.png', 150, 680, 'right', 5)
 enemys.add(enemy2)
-enemy3 = Enemy(1150, 110, 50, 90, r'images\katakuri.png', 0, 200, 'up', 5)
+enemy3 = Shot(1150, 110, 50, 90, r'images\katakuri.png', 0, 200, 'up', 5, 50)
 enemys.add(enemy3)
 enemy4 = Enemy(1150, 630, 50, 70, r'images\leopard.png', 155, 1150, 'left', 7)
 enemys.add(enemy4)
+
 
 player = Player(5, 6, 50, 70, r'images\Luffy.png')
 frukt = Game_sprite(90, 140, 40, 60, r'images\frukt.png')
@@ -191,6 +240,7 @@ key = Game_sprite(1000, 20, 50, 70, r'images\keys.png')
 exit = Game_sprite(5, 600, 100, 50, r'images\exit.png')
 
 bullets = pygame.sprite.Group()
+bullets_enemy = pygame.sprite.Group()
 
 
 walls = pygame.sprite.Group()
@@ -227,6 +277,11 @@ walls.add(wall15)
 wall16 = Game_sprite(1000, 450, 200, 5, r'images\wol.jpg')
 walls.add(wall16)
 
+btn_1 = Buton(550, 350, 70, 50, 'lvl 1', 30, LVL_1, LVL_1_CLICK, TEXT, 10, 10)
+btn_2 = Buton(550, 420, 70, 50, 'lvl 2', 30, LVL_2, LVL_2_CLICK, TEXT, 10, 10)
+btn_3 = Buton(550, 490, 70, 50, 'lvl 3', 30, LVL_3, LVL_3_CLICK, TEXT, 10, 10)
+btn_exit = Buton(550, 560, 70, 50, 'exit', 30, EXIT, LVL_3_CLICK, TEXT, 10, 10)
+
 
 def create_lvl_2():
     fon = pygame.image.load(fila_path(r"images\turma.jpg"))
@@ -244,7 +299,7 @@ def create_lvl_2():
 
 
 
-lvl = 1
+lvl = 0
 #create_lvl_2()
 game = True
 
@@ -292,16 +347,17 @@ while game == True:
         frukt.show()
         bonus.show()
         key.show()
-        #wall6.show()
         exit.show()
         enemys.draw(window)
         enemys.update()
         walls.draw(window)
         bullets.draw(window)
         bullets.update()
+        bullets_enemy.draw(window)
+        bullets_enemy.update()
         
     
-        if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False:
+        if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False or pygame.sprite.spritecollide(player, bullets_enemy, True) and player.is_gear == False:
             lvl = 11
             pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
             pygame.mixer.music.set_volume(0.1)
@@ -356,6 +412,10 @@ while game == True:
 
     elif lvl == 0:
         window.blit(fon_menu, (0, 0))
+        btn_1.show()
+        btn_2.show()
+        btn_3.show()
+        btn_exit.show()
 
     elif lvl == 10:
         window.blit(win_image, (0, 0))

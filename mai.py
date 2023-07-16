@@ -300,7 +300,7 @@ def create_lvl_2():
 
 
 
-lvl = 0
+lvl = 1
 #create_lvl_2()
 game = True
 

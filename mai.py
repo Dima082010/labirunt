@@ -288,6 +288,7 @@ def create_lvl_2():
     fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
 
     bullets.empty()
+    bullets_enemy.empty()
     enemys.empty()
     #! Створи ворогів діма!
     walls.empty()

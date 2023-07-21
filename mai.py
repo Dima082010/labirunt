@@ -238,6 +238,7 @@ frukt3 = Game_sprite(90, 240, 40, 60, r"images\frukt2.png")
 bonus = Game_sprite(250, 250, 50, 70, r'images\bonus.png')
 key = Game_sprite(1000, 20, 50, 70, r'images\keys.png')
 exit = Game_sprite(5, 600, 100, 50, r'images\exit.png')
+exit_2 = Game_sprite(400, 430, 100, 50, r'images\exit.png')
 
 bullets = pygame.sprite.Group()
 bullets_enemy = pygame.sprite.Group()
@@ -291,8 +292,18 @@ def create_lvl_2():
     bullets_enemy.empty()
     enemys.empty()
     #! Створи ворогів діма!
+    enemy_2 = Enemy(600, 480, 50, 70, r'images\prison.png', 0, 500, 'left', 4)
+    enemys.add(enemy_2)
+    enemy2_2 = Enemy(600, 480, 50, 70, r'images\Crocodile.png', 0, 600, 'left', 4)
+    enemys.add(enemy2_2)
     walls.empty()
     #! створити стіни!
+    wall1_2 = Game_sprite(1000, 0, 5, 200, r'images\wol.jpg')
+    walls.add(wall1_2)
+    wall2_2 = Game_sprite(150, 300, 350, 5, r'images\wol.jpg')
+    walls.add(wall2_2)
+    wall3_2 = Game_sprite(500, 300, 200, 5, r'images\wol.jpg')
+    walls.add(wall3_2)
 
     player.rect.x = 5
     player.rect.y = 66
@@ -300,8 +311,8 @@ def create_lvl_2():
 
 
 
-lvl = 1
-#create_lvl_2()
+lvl = 2
+create_lvl_2()
 game = True
 
 while game == True:
@@ -404,7 +415,7 @@ while game == True:
         #frukt_2.show()
         #bonus.show()
         #key_2.show()
-        exit.show()
+        exit_2.show()
         enemys.draw(window)
         enemys.update()
         walls.draw(window)

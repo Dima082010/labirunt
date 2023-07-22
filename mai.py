@@ -305,10 +305,11 @@ def create_lvl_1():
 
 
 def create_lvl_2():
-    global player, exit_2, frukt2
+    global player, exit_2, frukt2, bonus_2
     exit_2 = Game_sprite(400, 430, 100, 50, r'images\exit.png')
     frukt2 = Game_sprite(90, 240, 40, 60, r"images\Mochi.png")
     player = Player(5, 6, 50, 70, r'images\Luffy.png')
+    bonus_2 = Game_sprite(1000, 700, 50, 70, r'images\bonus.png')
 
     fon = pygame.image.load(fila_path(r"images\turma.jpg"))
     fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
@@ -322,10 +323,14 @@ def create_lvl_2():
 
     enemys.empty()
     #! Створи ворогів діма!
-    enemy_2 = Enemy(600, 420, 50, 70, r'images\prison.png', 0, 500, 'left', 4)
-    enemys.add(enemy_2)
-    enemy2_2 = Enemy(600, 450, 50, 70, r'images\Crocodile.png', 0, 600, 'left', 4)
+    enemy1_2 = Enemy(500, 420, 70, 90, r'images\prison.png', 0, 500, 'left', 4)
+    enemys.add(enemy1_2)
+    enemy2_2 = Shot(1100, 0, 70, 110, r'images\katakuri.png', 0, 500, 'down', 4, 50)
     enemys.add(enemy2_2)
+    enemy3_2 = Enemy(0, 100, 70, 90, r'images\Crocodile.png', 0, 700, 'left', 5)
+    enemys.add(enemy3_2)
+    enemy4_2 = Enemy(800, 0, 70, 90, r'images\leopard.png', 0, 700, 'down', 5)
+    enemys.add(enemy4_2)
 
     walls.empty()
     #! створити стіни!
@@ -335,6 +340,10 @@ def create_lvl_2():
     walls.add(wall2_2)
     wall3_2 = Game_sprite(500, 300, 5, 200, r'images\wol.jpg')
     walls.add(wall3_2)
+    wall4_2 = Game_sprite(1000, 500, 200, 5, r'images\wol.jpg')
+    walls.add(wall4_2)
+    wall5_2 = Game_sprite(7, 501, 500, 5, r'images\wol.jpg')
+    walls.add(wall5_2)
 
 def create_lvl_3():
     pass
@@ -473,7 +482,7 @@ while game == True:
         player.show()
         player.update()
         #frukt_2.show()
-        #bonus.show()
+        bonus_2.show()
         #key_2.show()
         exit_2.show()
         enemys.draw(window)

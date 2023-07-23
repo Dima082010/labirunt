@@ -305,11 +305,11 @@ def create_lvl_1():
 
 
 def create_lvl_2():
-    global player, exit_2, frukt2, bonus_2
-    exit_2 = Game_sprite(400, 430, 100, 50, r'images\exit.png')
-    frukt2 = Game_sprite(90, 240, 40, 60, r"images\Mochi.png")
-    player = Player(5, 6, 50, 70, r'images\Luffy.png')
-    bonus_2 = Game_sprite(1000, 700, 50, 70, r'images\bonus.png')
+    global player, exit_2, frukt_2, bonus_2
+    exit_2 = Game_sprite(600, 625, 100, 50, r'images\exit.png')
+    frukt_2 = Game_sprite(700, 255, 40, 60, r"images\Mochi.png")
+    player = Player(20, 630, 50, 70, r'images\Luffy.png')
+    bonus_2 = Game_sprite(38, 196, 50, 70, r'images\bonus.png')
 
     fon = pygame.image.load(fila_path(r"images\turma.jpg"))
     fon = pygame.transform.scale(fon, (WIN_WIDTH, WIN_HEIGHT))
@@ -323,36 +323,66 @@ def create_lvl_2():
 
     enemys.empty()
     #! Створи ворогів діма!
-    enemy1_2 = Enemy(500, 420, 70, 90, r'images\prison.png', 0, 500, 'left', 4)
+    enemy1_2 = Enemy(290, 35, 50, 70, r'images\prison.png', 35, 400, 'down', 4)
     enemys.add(enemy1_2)
-    enemy2_2 = Shot(1100, 0, 70, 110, r'images\katakuri.png', 0, 500, 'down', 4, 50)
+    enemy2_2 = Shot(1100, 0, 50, 90, r'images\katakuri.png', 0, 400, 'down', 4, 50)
     enemys.add(enemy2_2)
-    enemy3_2 = Enemy(0, 100, 70, 90, r'images\Crocodile.png', 0, 700, 'left', 5)
+    enemy3_2 = Enemy(15, 500, 50, 70, r'images\Crocodile.png', 0, 780, 'left', 5)
     enemys.add(enemy3_2)
-    enemy4_2 = Enemy(800, 0, 70, 90, r'images\leopard.png', 0, 700, 'down', 5)
+    enemy4_2 = Enemy(575, 20, 60, 80, r'images\leopard.png', 575, 1020, 'right', 5)
     enemys.add(enemy4_2)
 
     walls.empty()
     #! створити стіни!
-    wall1_2 = Game_sprite(1000, 0, 5, 200, r'images\wol.jpg')
+    wall1_2 = Game_sprite(0, 570, 400, 5, r'images\wol.jpg')
     walls.add(wall1_2)
-    wall2_2 = Game_sprite(150, 300, 350, 5, r'images\wol.jpg')
+    wall2_2 = Game_sprite(550, 570, 5, 130, r'images\wol.jpg')
     walls.add(wall2_2)
-    wall3_2 = Game_sprite(500, 300, 5, 200, r'images\wol.jpg')
+    wall3_2 = Game_sprite(100, 450, 290, 5, r'images\wol.jpg')
     walls.add(wall3_2)
-    wall4_2 = Game_sprite(1000, 500, 200, 5, r'images\wol.jpg')
+    wall4_2 = Game_sprite(389, 100, 5, 355, r'images\wol.jpg')
     walls.add(wall4_2)
-    wall5_2 = Game_sprite(7, 501, 500, 5, r'images\wol.jpg')
+    wall5_2 = Game_sprite(0, 300, 200, 5, r'images\wol.jpg')
     walls.add(wall5_2)
+    wall6_2 = Game_sprite(0, 150, 200, 5, r'images\wol.jpg')
+    walls.add(wall6_2)
+    wall7_2 = Game_sprite(550, 570, 500, 5, r'images\wol.jpg')
+    walls.add(wall7_2)
+    wall8_2 = Game_sprite(550, 0, 5, 450, r'images\wol.jpg')
+    walls.add(wall8_2)
+    wall9_2 = Game_sprite(550, 105, 250, 5, r'images\wol.jpg')
+    walls.add(wall9_2)
+    wall10_2 = Game_sprite(925, 105, 5, 470, r'images\wol.jpg')
+    walls.add(wall10_2)
+    wall11_2 = Game_sprite(800, 350, 5, 220, r'images\wol.jpg')
+    walls.add(wall11_2)
+    wall12_2 = Game_sprite(675, 350, 125, 5, r'images\wol.jpg')
+    walls.add(wall12_2)
+    wall13_2 = Game_sprite(675, 225, 5, 125, r'images\wol.jpg')
+    walls.add(wall13_2)
+    wall14_2 = Game_sprite(675, 225, 125, 5, r'images\wol.jpg')
+    walls.add(wall14_2)
+    wall15_2 = Game_sprite(1040, 0, 5, 100, r'images\wol.jpg')
+    walls.add(wall15_2)
+    wall16_2 = Game_sprite(1040, 200, 5, 200, r'images\wol.jpg')
+    walls.add(wall16_2)
+    wall17_2 = Game_sprite(1040, 400, 155, 5, r'images\wol.jpg')
+    walls.add(wall17_2)
 
 def create_lvl_3():
-    pass
+    global player
+    player = Player(20, 630, 50, 70, r'images\Luffy.png')
+    bullets.empty()
+    bullets_enemy.empty()
+
+    walls.empty()
     
 
 
 
 
-lvl = 0
+lvl = 3
+create_lvl_3()
 game = True
 
 while game == True:
@@ -481,10 +511,19 @@ while game == True:
         window.blit(fon, (0, 0))
         player.show()
         player.update()
-        #frukt_2.show()
+        frukt_2.show()
         bonus_2.show()
-        #key_2.show()
         exit_2.show()
+        enemys.draw(window)
+        enemys.update()
+        walls.draw(window)
+        bullets.draw(window)
+        bullets.update()
+
+    elif lvl == 3:
+        window.blit(fon, (0, 0))
+        player.show()
+        player.update()
         enemys.draw(window)
         enemys.update()
         walls.draw(window)

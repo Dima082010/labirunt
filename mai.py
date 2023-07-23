@@ -331,6 +331,11 @@ def create_lvl_2():
     enemys.add(enemy3_2)
     enemy4_2 = Enemy(575, 20, 60, 80, r'images\leopard.png', 575, 1020, 'right', 5)
     enemys.add(enemy4_2)
+    enemy5_2 = Enemy(565, 170, 40, 60, r'images\gggg.png', 565, 914, 'right', 5)
+    enemys.add(enemy5_2)
+    enemy6_2 = Enemy(1111, 410, 50, 60, r'images\lo.png', 410, 690, 'down', 4)
+    enemys.add(enemy6_2)
+
 
     walls.empty()
     #! створити стіни!
@@ -381,8 +386,8 @@ def create_lvl_3():
 
 
 
-lvl = 3
-create_lvl_3()
+lvl = 0
+#create_lvl_3()
 game = True
 
 while game == True:

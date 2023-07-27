@@ -333,7 +333,9 @@ def create_lvl_2():
     enemys.add(enemy4_2)
     enemy5_2 = Enemy(565, 170, 40, 60, r'images\gggg.png', 565, 914, 'right', 5)
     enemys.add(enemy5_2)
-    enemy6_2 = Enemy(1111, 410, 50, 60, r'images\lo.png', 410, 690, 'down', 4)
+    enemy6_2 = Enemy(1111, 410, 50, 6
+    
+    0, r'images\lo.png', 410, 690, 'down', 4)
     enemys.add(enemy6_2)
 
 

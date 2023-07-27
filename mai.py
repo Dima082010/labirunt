@@ -333,9 +333,9 @@ def create_lvl_2():
     enemys.add(enemy4_2)
     enemy5_2 = Enemy(565, 170, 40, 60, r'images\gggg.png', 565, 914, 'right', 5)
     enemys.add(enemy5_2)
-    enemy6_2 = Enemy(1111, 410, 50, 6
+    enemy6_2 = Enemy(1111, 410, 50, 60, r'images\lo.png', 410, 690, 'down', 4)
     
-    0, r'images\lo.png', 410, 690, 'down', 4)
+    
     enemys.add(enemy6_2)
 
 
@@ -377,18 +377,24 @@ def create_lvl_2():
     walls.add(wall17_2)
 
 def create_lvl_3():
-    global player
-    player = Player(20, 630, 50, 70, r'images\Luffy.png')
+    global player, bonus_3
+    bonus_3 = Game_sprite(38, 196, 50, 70, r'images\bonus.png')
+    player = Player(630, 50, 50, 70, r'images\Luffy.png')
     bullets.empty()
     bullets_enemy.empty()
 
+    enemys.empty()
+
+
     walls.empty()
+    wall1_3 = Game_sprite(300, 500, 400, 5, r'images\wol.jpg')
+    walls.add(wall1_3)
     
 
 
 
 
-lvl = 0
+lvl = 3
 #create_lvl_3()
 game = True
 
@@ -529,8 +535,8 @@ while game == True:
 
     elif lvl == 3:
         window.blit(fon, (0, 0))
-        player.show()
-        player.update()
+        #player.show()
+        #player.update()
         enemys.draw(window)
         enemys.update()
         walls.draw(window)

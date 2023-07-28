@@ -377,24 +377,49 @@ def create_lvl_2():
     walls.add(wall17_2)
 
 def create_lvl_3():
-    global player, bonus_3
-    bonus_3 = Game_sprite(38, 196, 50, 70, r'images\bonus.png')
-    player = Player(630, 50, 50, 70, r'images\Luffy.png')
+    global player, bonus_3, exit_3, frukt_3
+    exit_3 = Game_sprite(1060, 500, 100, 50, r'images\exit.png')
+    frukt_3 = Game_sprite(440, 250, 50, 60, r"images\frukt2.png")
+    bonus_3 = Game_sprite(1100, 630, 50, 70, r'images\bonus.png')
+    player = Player(50, 630, 50, 70, r'images\Luffy.png')
     bullets.empty()
     bullets_enemy.empty()
 
     enemys.empty()
 
+    enemy1_3 = Enemy(50, 200, 50, 70, r'images\prison.png', 35, 600, 'down', 4)
+    enemys.add(enemy1_3)
+
+
 
     walls.empty()
-    wall1_3 = Game_sprite(300, 500, 400, 5, r'images\wol.jpg')
+
+    wall1_3 = Game_sprite(0, 600, 500, 5, r'images\wol.jpg')
     walls.add(wall1_3)
+    wall2_3 = Game_sprite(495, 200, 5, 400, r'images\wol.jpg')
+    walls.add(wall2_3)
+    wall3_3 = Game_sprite(595, 600, 600, 5, r'images\wol.jpg')
+    enemys.add(wall3_3)
+    wall4_3 = Game_sprite(155, 195, 350, 5, r'images\wol.jpg')
+    enemys.add(wall4_3)
+    wall5_3 = Game_sprite(155, 200, 5, 260, r'images\wol.jpg')
+    enemys.add(wall5_3)
+    wall6_3 = Game_sprite(595, 200, 5, 400, r'images\wol.jpg')
+    enemys.add(wall6_3)
+    wall7_3 = Game_sprite(595, 200, 300, 5, r'images\wol.jpg')
+    enemys.add(wall7_3)
+    wall8_3 = Game_sprite(1050, 0, 5, 450, r'images\wol.jpg')
+    enemys.add(wall8_3)
+    wall9_3 = Game_sprite(1050, 450, 200, 5, r'images\wol.jpg')
+    enemys.add(wall9_3)
+    
+
     
 
 
 
 
-lvl = 3
+lvl = 0
 #create_lvl_3()
 game = True
 
@@ -535,13 +560,16 @@ while game == True:
 
     elif lvl == 3:
         window.blit(fon, (0, 0))
-        #player.show()
-        #player.update()
+        player.show()
+        player.update()
         enemys.draw(window)
         enemys.update()
         walls.draw(window)
         bullets.draw(window)
         bullets.update()
+        bonus_3.show()
+        frukt_3.show()
+        exit_3.show()
 
     elif lvl == 0:
         window.blit(fon_menu, (0, 0))

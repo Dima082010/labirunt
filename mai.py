@@ -45,6 +45,8 @@ music_door = pygame.mixer.Sound(fila_path(r'music\skrip-dvernoy-ruchki.ogg'))
 music_shot = pygame.mixer.Sound(fila_path(r'music\vyistrel-iz-blastera.ogg'))
 music_shot.set_volume(0.2)
 
+music_bruck = pygame.mixer.Sound(fila_path(r'music\vyistrel-iz-blastera.ogg'))
+
 music_eat = pygame.mixer.Sound(fila_path(r'music\poedanie-ukus-yabloka.ogg'))
 
 music_closed_door = pygame.mixer.Sound(fila_path(r'music\door.ogg'))
@@ -80,7 +82,7 @@ class Buton():
 
 
 class Player(Game_sprite):
-    def __init__(self, x, y, width, height, image_name):
+    def __init__(self, x, y, width, height, image_name, can_shot):
         super().__init__(x, y, width, height, image_name)
         self.speedx = 0
         self.speedy = 0
@@ -88,7 +90,7 @@ class Player(Game_sprite):
         self.image_l = self.image
         self.image_r = pygame.transform.flip(self.image, True, False)
         self.is_key = 0
-        self.can_shot = 0
+        self.can_shot = can_shot
         self.is_gear = False
         self.image_gear_l = pygame.image.load(fila_path(r'images\lufi.png'))
         self.image_gear_l = pygame.transform.scale(self.image_gear_l, (width, height))
@@ -229,6 +231,7 @@ frukt3 = Game_sprite(90, 240, 40, 60, r"images\frukt2.png")
 bullets = pygame.sprite.Group()
 bullets_enemy = pygame.sprite.Group()
 
+walls_bruck = pygame.sprite.Group()
 
 walls = pygame.sprite.Group()
 
@@ -240,7 +243,7 @@ btn_exit = Buton(550, 560, 70, 50, 'exit', 30, EXIT, LVL_3_CLICK, TEXT, 10, 10)
 
 def create_lvl_1():
     global player, frukt, key, bonus, exit, wall6
-    player = Player(5, 6, 50, 70, r'images\Luffy.png')
+    player = Player(5, 6, 50, 70, r'images\Luffy.png', 0)
     frukt = Game_sprite(90, 140, 40, 60, r'images\frukt.png')
     bonus = Game_sprite(250, 250, 50, 70, r'images\bonus.png')
     key = Game_sprite(1000, 20, 50, 70, r'images\keys.png')
@@ -303,12 +306,11 @@ def create_lvl_1():
 
     
 
-
 def create_lvl_2():
     global player, exit_2, frukt_2, bonus_2
     exit_2 = Game_sprite(600, 625, 100, 50, r'images\exit.png')
     frukt_2 = Game_sprite(700, 255, 40, 60, r"images\Mochi.png")
-    player = Player(20, 630, 50, 70, r'images\Luffy.png')
+    player = Player(20, 630, 50, 70, r'images\Luffy.png', 1)
     bonus_2 = Game_sprite(38, 196, 50, 70, r'images\bonus.png')
 
     fon = pygame.image.load(fila_path(r"images\turma.jpg"))
@@ -334,10 +336,20 @@ def create_lvl_2():
     enemy5_2 = Enemy(565, 170, 40, 60, r'images\gggg.png', 565, 914, 'right', 5)
     enemys.add(enemy5_2)
     enemy6_2 = Enemy(1111, 410, 50, 60, r'images\lo.png', 410, 690, 'down', 4)
-    
-    
     enemys.add(enemy6_2)
 
+    walls_bruck.empty()
+
+    wall_bruck1_2 = Game_sprite(400, 570, 200, 5, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck1_2)
+    wall_bruck2_2 = Game_sprite(195, 152, 5, 150, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck2_2)
+    wall_bruck3_2 = Game_sprite(550, 350, 200, 5, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck3_2)
+    wall_bruck4_2 = Game_sprite(1040, 100, 5, 200, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck4_2)
+    wall_bruck5_2 = Game_sprite(745, 575, 5, 200, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck5_2)
 
     walls.empty()
     #! створити стіни!
@@ -376,12 +388,13 @@ def create_lvl_2():
     wall17_2 = Game_sprite(1040, 400, 155, 5, r'images\wol.jpg')
     walls.add(wall17_2)
 
+
 def create_lvl_3():
     global player, bonus_3, exit_3, frukt_3
     exit_3 = Game_sprite(1060, 500, 100, 50, r'images\exit.png')
-    frukt_3 = Game_sprite(440, 250, 50, 60, r"images\frukt2.png")
-    bonus_3 = Game_sprite(1100, 630, 50, 70, r'images\bonus.png')
-    player = Player(50, 630, 50, 70, r'images\Luffy.png')
+    bonus_3 = Game_sprite(440, 250, 50, 60, r"images\bonus.png")
+    frukt_3 = Game_sprite(1100, 630, 50, 70, r'images\frukt2.png')
+    player = Player(50, 630, 50, 70, r'images\Luffy.png', 2)
     bullets.empty()
     bullets_enemy.empty()
 
@@ -399,19 +412,19 @@ def create_lvl_3():
     wall2_3 = Game_sprite(495, 200, 5, 400, r'images\wol.jpg')
     walls.add(wall2_3)
     wall3_3 = Game_sprite(595, 600, 600, 5, r'images\wol.jpg')
-    enemys.add(wall3_3)
+    walls.add(wall3_3)
     wall4_3 = Game_sprite(155, 195, 350, 5, r'images\wol.jpg')
-    enemys.add(wall4_3)
+    walls.add(wall4_3)
     wall5_3 = Game_sprite(155, 200, 5, 260, r'images\wol.jpg')
-    enemys.add(wall5_3)
+    walls.add(wall5_3)
     wall6_3 = Game_sprite(595, 200, 5, 400, r'images\wol.jpg')
-    enemys.add(wall6_3)
+    walls.add(wall6_3)
     wall7_3 = Game_sprite(595, 200, 300, 5, r'images\wol.jpg')
-    enemys.add(wall7_3)
+    walls.add(wall7_3)
     wall8_3 = Game_sprite(1050, 0, 5, 450, r'images\wol.jpg')
-    enemys.add(wall8_3)
+    walls.add(wall8_3)
     wall9_3 = Game_sprite(1050, 450, 200, 5, r'images\wol.jpg')
-    enemys.add(wall9_3)
+    walls.add(wall9_3)
     
 
     
@@ -429,7 +442,7 @@ while game == True:
             game = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             print(event.pos)
-        if lvl == 1:
+        if lvl == 1 or lvl == 2 or lvl == 3:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.speedx = 5
@@ -532,10 +545,9 @@ while game == True:
                 print('В тебе немає ключа!')
 
         if pygame.sprite.collide_rect(player, exit):
-            lvl = 10
-            pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
-            pygame.mixer.music.set_volume(0.1)
-            pygame.mixer.music.play(-1)
+            create_lvl_2()
+            lvl = 2
+            
         
         if pygame.sprite.collide_rect(player, bonus):
             player.gear_on()
@@ -557,6 +569,35 @@ while game == True:
         walls.draw(window)
         bullets.draw(window)
         bullets.update()
+        bullets_enemy.draw(window)
+        bullets_enemy.update()
+        walls_bruck.draw(window)
+
+        pygame.sprite.groupcollide(bullets, walls, True, False)
+        pygame.sprite.groupcollide(bullets, enemys, True, True)
+
+        if pygame.sprite.spritecollide(player, walls_bruck, True):
+            music_bruck.play()
+
+        if pygame.sprite.collide_rect(player, bonus_2):
+            player.gear_on()
+            music_gear.play()
+            bonus_2.rect.y = -100
+
+        if pygame.sprite.collide_rect(player, exit_2):
+            create_lvl_3()
+            lvl = 3
+
+        if pygame.sprite.collide_rect(player, frukt_2):
+            player.can_shot += 1
+            music_eat.play()
+            frukt_2.rect.y = -600
+
+        if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False or pygame.sprite.spritecollide(player, bullets_enemy, True) and player.is_gear == False:
+            lvl = 11
+            pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1)
 
     elif lvl == 3:
         window.blit(fon, (0, 0))
@@ -570,6 +611,33 @@ while game == True:
         bonus_3.show()
         frukt_3.show()
         exit_3.show()
+        bullets_enemy.draw(window)
+        bullets_enemy.update()
+
+        pygame.sprite.groupcollide(bullets, walls, True, False)
+        pygame.sprite.groupcollide(bullets, enemys, True, True)
+
+        if pygame.sprite.collide_rect(player, bonus_3):
+            player.gear_on()
+            music_gear.play()
+            bonus_3.rect.y = -100
+
+        if pygame.sprite.collide_rect(player, exit_3):
+            lvl = 10
+            pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1)
+
+        if pygame.sprite.collide_rect(player, frukt_3):
+            player.can_shot += 1
+            music_eat.play()
+            frukt_3.rect.y = -600
+
+        if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False or pygame.sprite.spritecollide(player, bullets_enemy, True) and player.is_gear == False:
+            lvl = 11
+            pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1)
 
     elif lvl == 0:
         window.blit(fon_menu, (0, 0))

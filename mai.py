@@ -389,6 +389,8 @@ def create_lvl_2():
     walls.add(wall17_2)
 
 
+
+
 def create_lvl_3():
     global player, bonus_3, exit_3, frukt_3
     exit_3 = Game_sprite(1060, 500, 100, 50, r'images\exit.png')
@@ -400,10 +402,29 @@ def create_lvl_3():
 
     enemys.empty()
 
-    enemy1_3 = Enemy(50, 200, 50, 70, r'images\prison.png', 35, 600, 'down', 4)
+    enemy1_3 = Enemy(50, 200, 50, 70, r'images\prison.png', 0, 600, 'down', 4)
     enemys.add(enemy1_3)
+    enemy2_3 = Enemy(880, 115, 50, 70, r'images\Crocodile.png', 100, 600, 'left', 4)
+    enemys.add(enemy2_3)
+    enemy3_3 = Enemy(1050, 620, 60, 80, r'images\leopard.png', 200, 1050, 'left', 6)
+    enemys.add(enemy3_3)
+    enemy5_3 = Shot(1100, 0, 50, 90, r'images\katakuri.png', 0, 450, 'down', 4, 50)
+    enemys.add(enemy5_3)
+    enemy6_3 = Shot(630, 235, 50, 90, r'images\katakuri.png', 235, 575, 'down', 4, 50)
+    enemys.add(enemy6_3)
 
+    walls_bruck.empty()
 
+    wall_bruck1_3 = Game_sprite(155, 600, 5, 200, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck1_3)
+    wall_bruck2_3 = Game_sprite(500, 600, 200, 5, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck2_3)
+    wall_bruck3_3 = Game_sprite(160, 455, 340, 5, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck3_3)
+    wall_bruck4_3 = Game_sprite(500, 200, 100, 5, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck4_3)
+    wall_bruck5_3 = Game_sprite(890, 0, 5, 200, r'images\wol.jpg')
+    walls_bruck.add(wall_bruck5_3)
 
     walls.empty()
 
@@ -613,6 +634,7 @@ while game == True:
         exit_3.show()
         bullets_enemy.draw(window)
         bullets_enemy.update()
+        walls_bruck.draw(window)
 
         pygame.sprite.groupcollide(bullets, walls, True, False)
         pygame.sprite.groupcollide(bullets, enemys, True, True)

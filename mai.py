@@ -38,6 +38,7 @@ pygame.mixer.music.load(fila_path(r'music\fon_music_menu.mp3'))
 pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)
 
+
 music_key = pygame.mixer.Sound(fila_path(r'music\vzyali-v-ruki-svyazku-klyuchey.ogg'))
 
 music_door = pygame.mixer.Sound(fila_path(r'music\skrip-dvernoy-ruchki.ogg'))
@@ -45,13 +46,15 @@ music_door = pygame.mixer.Sound(fila_path(r'music\skrip-dvernoy-ruchki.ogg'))
 music_shot = pygame.mixer.Sound(fila_path(r'music\vyistrel-iz-blastera.ogg'))
 music_shot.set_volume(0.2)
 
-music_bruck = pygame.mixer.Sound(fila_path(r'music\vyistrel-iz-blastera.ogg'))
+music_bruck = pygame.mixer.Sound(fila_path(r'music\facebook_sms.ogg'))
 
 music_eat = pygame.mixer.Sound(fila_path(r'music\poedanie-ukus-yabloka.ogg'))
 
 music_closed_door = pygame.mixer.Sound(fila_path(r'music\door.ogg'))
 
 music_gear = pygame.mixer.Sound(fila_path(r'music\gear.ogg'))
+
+music_boss = pygame.mixer.Sound(fila_path(r'music\gear.ogg'))
 
 
 
@@ -210,6 +213,11 @@ class Shot(Enemy):
         bullets_enemy.add(bullet)
 
 
+class Super_Shot(Shot):
+    def __init__(self, x, y, width, height, image_name, min_kord, max_kord, direction, speed, timer):
+        super().__init__(x, y, width, height, image_name, min_kord, max_kord, direction, speed, timer)
+        self.health = 5
+
 
 class Bulet(Game_sprite):
     def __init__(self, x, y, width, height, image_name, speed_ball):
@@ -261,7 +269,7 @@ def create_lvl_1():
     bullets_enemy.empty()
 
     enemys.empty()
-    enemy = Enemy(600, 480, 50, 70, r'images\prison.png', 0, 600, 'left', 4)
+    enemy = Enemy(600, 480, 50, 70, r'images\gggg.png', 0, 600, 'left', 4)
     enemys.add(enemy)
     enemy2 = Enemy(150, 140, 50, 70, r'images\Crocodile.png', 150, 680, 'right', 5)
     enemys.add(enemy2)
@@ -394,15 +402,15 @@ def create_lvl_2():
 def create_lvl_3():
     global player, bonus_3, exit_3, frukt_3
     exit_3 = Game_sprite(1060, 500, 100, 50, r'images\exit.png')
-    bonus_3 = Game_sprite(440, 250, 50, 60, r"images\bonus.png")
-    frukt_3 = Game_sprite(1100, 630, 50, 70, r'images\frukt2.png')
+    frukt_3 = Game_sprite(440, 250, 50, 70, r"images\bonus.png")
+    bonus_3 = Game_sprite(1100, 630, 50, 60, r'images\frukt2.png')
     player = Player(50, 630, 50, 70, r'images\Luffy.png', 2)
     bullets.empty()
     bullets_enemy.empty()
 
     enemys.empty()
 
-    enemy1_3 = Enemy(50, 200, 50, 70, r'images\prison.png', 0, 600, 'down', 4)
+    enemy1_3 = Enemy(50, 200, 50, 70, r'images\gggg.png', 0, 600, 'down', 4)
     enemys.add(enemy1_3)
     enemy2_3 = Enemy(880, 115, 50, 70, r'images\Crocodile.png', 100, 600, 'left', 4)
     enemys.add(enemy2_3)
@@ -448,13 +456,27 @@ def create_lvl_3():
     walls.add(wall9_3)
     
 
+
+
+def create_lvl_4():
+    global player, txt_health_boss 
+    player = Player(0, 630, 50, 70, r'images\Luffy.png', 1)
+    bullets.empty()
+    bullets_enemy.empty()
+    enemys.empty()
+    boss = Super_Shot(1000, 0, 100, 200, r'images\prison.png', 0, 700, 'down', 3, 110)
+    enemys.add(boss)
+    txt_health_boss = pygame.font.SysFont('calibri', 100).render('BOSS HP: ' + str(boss.health), True, TEXT)
+    walls_bruck.empty()
     
+    walls.empty()
 
 
 
 
-lvl = 0
-#create_lvl_3()
+
+lvl = 4
+create_lvl_4()
 game = True
 
 while game == True:
@@ -463,7 +485,7 @@ while game == True:
             game = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             print(event.pos)
-        if lvl == 1 or lvl == 2 or lvl == 3:
+        if lvl == 1 or lvl == 2 or lvl == 3 or lvl == 4:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.speedx = 5
@@ -639,16 +661,18 @@ while game == True:
         pygame.sprite.groupcollide(bullets, walls, True, False)
         pygame.sprite.groupcollide(bullets, enemys, True, True)
 
+        if pygame.sprite.spritecollide(player, walls_bruck, True):
+            music_bruck.play()
+
         if pygame.sprite.collide_rect(player, bonus_3):
             player.gear_on()
             music_gear.play()
             bonus_3.rect.y = -100
 
         if pygame.sprite.collide_rect(player, exit_3):
-            lvl = 10
-            pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
-            pygame.mixer.music.set_volume(0.1)
-            pygame.mixer.music.play(-1)
+            create_lvl_4()
+            lvl = 4
+            
 
         if pygame.sprite.collide_rect(player, frukt_3):
             player.can_shot += 1
@@ -660,6 +684,49 @@ while game == True:
             pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1)
+
+    elif lvl == 4:
+        window.blit(fon, (0, 0))
+        player.show()
+        player.update()
+        enemys.draw(window)
+        enemys.update()
+        walls.draw(window)
+        bullets.draw(window)
+        bullets.update()
+        bullets_enemy.draw(window)
+        bullets_enemy.update()
+        walls_bruck.draw(window)
+        window.blit(txt_health_boss, (400, 0))
+
+
+        pygame.sprite.groupcollide(bullets, walls, True, False)
+        '''
+        if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False or pygame.sprite.spritecollide(player, bullets_enemy, True) and player.is_gear == False:
+            lvl = 11
+            pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
+            pygame.mixer.music.set_volume(0.1)
+            pygame.mixer.music.play(-1)
+            '''
+        health = pygame.sprite.groupcollide(enemys, bullets, False, True)
+        if health:
+            for b in health:
+                b.health -= 1
+                txt_health_boss = pygame.font.SysFont('calibri', 100).render('BOSS HP: ' + str(b.health), True, TEXT)
+                player.rect.x = 0
+                player.rect.y = 630
+                b.max_timer -= 20
+                if b.health == 0:
+                    lvl = 10
+                    
+                    pygame.mixer.music.load(fila_path(r'music\win_music.mp3'))
+                    pygame.mixer.music.set_volume(0.1)
+                    pygame.mixer.music.play(-1)
+                else:
+                    music_boss.play()
+
+
+
 
     elif lvl == 0:
         window.blit(fon_menu, (0, 0))

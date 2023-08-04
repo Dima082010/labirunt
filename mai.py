@@ -471,6 +471,28 @@ def create_lvl_4():
     
     walls.empty()
 
+    wall1_4 = Game_sprite(150, 0, 5, 100, r'images\wol.jpg')
+    walls.add(wall1_4)
+    wall2_4 = Game_sprite(150, 200, 5, 100, r'images\wol.jpg')
+    walls.add(wall2_4)
+    wall3_4 = Game_sprite(150, 400, 5, 100, r'images\wol.jpg')
+    walls.add(wall3_4)
+    wall4_4 = Game_sprite(150, 600, 5, 100, r'images\wol.jpg')
+    walls.add(wall4_4)
+    wall5_4 = Game_sprite(250, 100, 5, 100, r'images\wol.jpg')
+    walls.add(wall5_4)
+    wall6_4 = Game_sprite(250, 300, 5, 100, r'images\wol.jpg')
+    walls.add(wall6_4)
+    wall7_4 = Game_sprite(250, 500, 5, 100, r'images\wol.jpg')
+    walls.add(wall7_4)
+    wall8_4 = Game_sprite(350, 0, 5, 100, r'images\wol.jpg')
+    walls.add(wall8_4)
+    wall9_4 = Game_sprite(350, 200, 5, 100, r'images\wol.jpg')
+    walls.add(wall9_4)
+    wall10_4 = Game_sprite(350, 400, 5, 100, r'images\wol.jpg')
+    walls.add(wall10_4)
+    wall11_4 = Game_sprite(350, 600, 5, 100, r'images\wol.jpg')
+    walls.add(wall11_4)
 
 
 
@@ -701,13 +723,13 @@ while game == True:
 
 
         pygame.sprite.groupcollide(bullets, walls, True, False)
-        '''
+        
         if pygame.sprite.spritecollide(player, enemys, False) and player.is_gear == False or pygame.sprite.spritecollide(player, bullets_enemy, True) and player.is_gear == False:
             lvl = 11
             pygame.mixer.music.load(fila_path(r'music\__kirbydx__wah-wah-sad-trombone (1).ogg'))
             pygame.mixer.music.set_volume(0.1)
             pygame.mixer.music.play(-1)
-            '''
+            
         health = pygame.sprite.groupcollide(enemys, bullets, False, True)
         if health:
             for b in health:

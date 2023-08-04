@@ -497,8 +497,7 @@ def create_lvl_4():
 
 
 
-lvl = 4
-create_lvl_4()
+lvl = 0
 game = True
 
 while game == True:

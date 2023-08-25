@@ -402,8 +402,8 @@ def create_lvl_2():
 def create_lvl_3():
     global player, bonus_3, exit_3, frukt_3
     exit_3 = Game_sprite(1060, 500, 100, 50, r'images\exit.png')
-    frukt_3 = Game_sprite(440, 250, 50, 70, r"images\bonus.png")
-    bonus_3 = Game_sprite(1100, 630, 50, 60, r'images\frukt2.png')
+    frukt_3 = Game_sprite(440, 250, 50, 70, r'images\frukt2.png')
+    bonus_3 = Game_sprite(1100, 630, 50, 60, r"images\bonus.png")
     player = Player(50, 630, 50, 70, r'images\Luffy.png', 2)
     bullets.empty()
     bullets_enemy.empty()
